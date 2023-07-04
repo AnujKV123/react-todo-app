@@ -1,24 +1,44 @@
 import logo from './logo.svg';
 import './App.css';
+import Nav from './components/nav';
+import { AddTodo } from './components/AddTodo';
+import { Todos } from './components/Todos';
+import React, { useState} from 'react';
 
 function App() {
+  let initTodo=[];
+
+  const onDelete = (todo)=>{
+    console.log("I am onDelete of todo: ", todo)
+    setTodos(todos.filter((e)=>{
+      return e !== todo;
+    }));
+  }
+
+  const addTodo = (title, desc)=>{
+      console.log("I am Adding", title, desc)
+      let sno;
+      if(todos.length===0){
+        sno=0;
+      }
+      else{
+      sno = todos[todos.length - 1].sno + 1;
+      }
+      const myTodo = {
+        sno:sno,
+        title:title,
+        desc:desc
+      }
+      setTodos([...todos, myTodo]);
+    }
+    const [todos, setTodos] = useState(initTodo);
+  
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <>
+    <Nav/>
+    <AddTodo addTodo={addTodo}/>
+    <Todos todos = {todos} onDelete = {onDelete}/>
+    </>
   );
 }
 
